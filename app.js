@@ -1,49 +1,31 @@
 let numeroAmigos = [];
 let LimiteAmigos = 10;
 
-function AsignacionDeTexto(elemento, texto) {
-    let elementoHTML = document.querySelector(elemento);
-    elementoHTML.innerHTML = texto;
-}
-
-AsignacionDeTexto('ul', 'Lista de Amigos');
-
 function limpiarcaja() {
     document.getElementById('amigo').value = "";
 }
 
 function agregarAmigo() {
-    let input = document.getElementById("amigo");
-    let nombre = input.value.trim(); // Elimina espacios en blanco antes y después
-
-    if (nombre === "") {  // Solo se ejecuta si el input está vacío
-        alert("Ingrese un nombre.");
-        input.focus(); // Vuelve a enfocar el input para escribir
-        return;
+    let nuevoElemento = document.createElement("li");
+    let primerIntento = true;
+    const input = document.getElementById('amigo');
+    const nombre = input.value.trim();
+    
+    // Validar que el nombre contenga solo letras, espacios y acentos
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    if (!soloLetras.test(nombre)) {
+        alert('Por favor, ingresa solo letras (puedes usar espacios y acentos)');
+        return false;
     }
     
     if (numeroAmigos.includes(nombre)) {
-        alert("Ese nombre ya está en la lista.");
-        input.focus();
-        return;
+        alert('Este nombre ya está en la lista');
+        return false;
     }
-    
-    if (numeroAmigos.length >= LimiteAmigos) {
-        alert("Has alcanzado el límite de amigos.");
-        return;
-    }
-
-    // Agregar el nombre a la lista
     numeroAmigos.push(nombre);
-
     // Crear un nuevo <li>
-    let nuevoElemento = document.createElement("li");
     nuevoElemento.textContent = nombre;
     document.getElementById("listaAmigos").appendChild(nuevoElemento);
-
-    // Limpiar input
-    input.value = "";
-    input.focus(); // Enfocar para que el usuario pueda escribir otro nombre
 }
 
 document.getElementById("agregar").addEventListener("click", agregarAmigo);
